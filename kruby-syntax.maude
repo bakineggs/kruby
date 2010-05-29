@@ -1,0 +1,28 @@
+mod KRUBY-SYNTAX is
+  --- see doc/syntax.html, which was saved from
+  --- http://web.njit.edu/all_topics/Prog_Lang_Docs/html/ruby/yacc.html
+  sorts Program Compstmt Stmt Expr Call Command Function Arg Primary WhenArgs
+        Then Do BlockVar Mlhs MlhsItem Lhs Rrhs CallArgs Args Argdecl Arglist
+        Singleton Assocs Assoc Variable Literal Term .
+  sorts OpAsgn Symbol Fname Operation Varname Global String String2 HereDoc
+        Regexp Identifier .
+
+  subsort Compstmt < Program .
+
+  sort List{Term,Expr} .
+  op __ : Term Expr -> List{Term,Expr} .
+  op __ : List{Term,Expr} List{Term,Expr} -> List{Term,Expr} .
+  op .List{Term,Expr} : -> List{Term,Expr} .
+
+  op ___ : Stmt List{Term,Expr} Term -> Compstmt .
+  op __ : Stmt List{Term,Expr} -> Compstmt .
+
+  op _do|_|_end : Call BlockVar Compstmt -> Stmt .
+  op _do_end : Call Compstmt -> Stmt .
+  op undef_ : Fname -> Stmt .
+  op alias__ : Fname Fname -> Stmt .
+  op _if_ : Stmt Expr -> Stmt .
+  op _while_ : Stmt Expr -> Stmt .
+  op _unless_ : Stmt Expr -> Stmt .
+  op _until_ : Stmt Expr -> Stmt .
+endm
