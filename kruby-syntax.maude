@@ -177,19 +177,13 @@ mod KRUBY-SYNTAX is
   subsort Lhs < BlockVar .
   subsort Mlhs < BlockVar .
 
-  sort List{commaMlhsItem} .
-  op ,_ : MlhsItem -> List{commaMlhsItem} .
-  op __ : List{commaMlhsItem} List{commaMlhsItem} -> List{commaMlhsItem} .
-  op .List{commaMlhsItem} -> List{commaMlhsItem} .
-  op _,__*_ : MlhsItem MlhsItem List{commaMlhsItem} Lhs -> Mlhs .
-  op _,__* : MlhsItem MlhsItem List{commaMlhsItem} -> Mlhs .
-  op _,__ : MlhsItem MlhsItem List{commaMlhsItem} -> Mlhs .
-  op _,*_ : MlhsItem Lhs -> Mlhs .
   op _,* : MlhsItem -> Mlhs .
+  op _, : MlhsItem -> Mlhs .
   op *_ : Lhs -> Mlhs .
+  op _,_ : MlhsItem Mlhs -> Mlhs .
 
   subsort Lhs < MlhsItem .
-  subsort Mlhs < MlhsItem . --- op (_) : Mlhs -> MlhsItem .
+  op ((_)) : Mlhs -> MlhsItem .
 
   subsort Variable < Lhs .
   op _[_] : Primary Args -> Lhs .
@@ -217,27 +211,16 @@ mod KRUBY-SYNTAX is
   op &_ : Arg -> CallArgs .
   subsort Command < CallArgs .
 
-  sort List{commaArg} .
-  op ,_ : Arg -> List{commaArg} .
-  op __ : List{commaArg} List{commaArg} -> List{commaArg} .
-  op .List{commaArg} : -> List{commaArg} .
-  op __ : Arg List{commaArg} -> Args .
+  op _,_ : Args Arg -> Args .
+  subsort Arg < Args .
 
   subsort Arglist < Argdecl . --- op (_) : Arglist -> Argdecl .
   op __ : Arglist Term -> Argdecl .
 
-  sort List{commaIdentifier} .
-  op ,_ : Identifier -> List{commaIdentifier} .
-  op __ : List{commaIdentifier} List{commaIdentifier} -> List{commaIdentifier} .
-  op .List{commaIdentifier} -> List{commaIdentifier} .
-  op __,*_,&_ : Identifier List{commaIdentifier} Identifier Identifier -> Arglist .
-  op __,*_ : Identifier List{commaIdentifier} Identifier -> Arglist .
-  op __,*,&_ : Identifier List{commaIdentifier} Identifier -> Arglist .
-  op __,&_ : Identifier List{commaIdentifier} Identifier -> Arglist .
-  op __ : Identifier List{commaIdentifier} -> Arglist .
-  op *_,&_ : Identifier Identifier -> Arglist .
+  op *_&_ : Identifier Identifier -> Arglist .
+  op &_ : Identifier -> Arglist .
   op *_ : Identifier -> Arglist .
-  op .Arglist : -> Arglist . --- op : -> Arglist .
+  op _,_ : Identifier Arglist -> Arglist .
 
   subsort Variable < Singleton .
   subsort Expr < Singleton . --- op (_) : Expr -> Singleton .
