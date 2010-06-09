@@ -29,6 +29,7 @@ mod KRUBY-SYNTAX is
   op BEGIN {_} : Compstmt -> Stmt .
   op END {_} : Compstmt -> Stmt .
   op _=_do |_|_end : Lhs Command BlockVar Compstmt -> Stmt .
+  op _=_do ||_end : Lhs Command Compstmt -> Stmt .
   op _=_do_end : Lhs Command Compstmt -> Stmt .
   op _=_ : Lhs Command -> Stmt .
   subsort Expr < Stmt .
