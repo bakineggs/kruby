@@ -311,5 +311,31 @@ mod KRUBY-SYNTAX is
   op @_ : Identifier -> Varname .
   subsort Identifier < Varname .
 
+  sort any_char .
+  ops a b c d e f g h i j k l m n o p q r s t u v w x y z : -> any_char .
+
+  sort any_char_seq . --- should be any_char*
+  subsort any_char < any_char_seq .
+
   op $_ : Identifier -> Global .
+  op $_ : any_char -> Global .
+  op $-_ : any_char -> Global .
+
+  op "_" : any_char_seq -> String .
+  op '_' : any_char_seq -> String .
+  --- op `_` : any_char_seq -> String .
+
+  op %Q___ : any_char any_char_seq any_char -> String2 .
+  op %q___ : any_char any_char_seq any_char -> String2 .
+  op %x___ : any_char any_char_seq any_char -> String2 .
+
+  op <<___ : Identifier any_char_seq Identifier -> HereDoc .
+  op <<___ : String any_char_seq Identifier -> HereDoc .
+
+  op /_/i : any_char_seq -> Regexp .
+  op /_/o : any_char_seq -> Regexp .
+  op /_/p : any_char_seq -> Regexp .
+  op %r___ : any_char any_char_seq any_char -> Regexp .
+
+  subsort any_char < Identifier .
 endm
