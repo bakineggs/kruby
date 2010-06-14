@@ -9,13 +9,11 @@ mod KRUBY-SYNTAX is
 
   subsort Compstmt < Program .
 
-  sort List{Term,Expr} .
-  op __ : Term Expr -> List{Term,Expr} .
-  op __ : List{Term,Expr} List{Term,Expr} -> List{Term,Expr} .
-  op .List{Term,Expr} : -> List{Term,Expr} .
-
-  op ___ : Stmt List{Term,Expr} Term -> Compstmt .
-  op __ : Stmt List{Term,Expr} -> Compstmt .
+  sort CompstmtEndingWithExpr .
+  subsort Stmt < CompstmtEndingWithExpr .
+  op ___ : CompstmtEndingWithExpr Term Expr -> CompstmtEndingWithExpr .
+  op __ : CompstmtEndingWithExpr Term -> Compstmt .
+  subsort CompstmtEndingWithExpr < Compstmt .
 
   op _do|_|_end : Call BlockVar Compstmt -> Stmt .
   op _do||_end : Call Compstmt -> Stmt .
@@ -26,10 +24,10 @@ mod KRUBY-SYNTAX is
   op _while_ : Stmt Expr -> Stmt .
   op _unless_ : Stmt Expr -> Stmt .
   op _until_ : Stmt Expr -> Stmt .
-  op BEGIN {_} : Compstmt -> Stmt .
-  op END {_} : Compstmt -> Stmt .
-  op _=_do |_|_end : Lhs Command BlockVar Compstmt -> Stmt .
-  op _=_do ||_end : Lhs Command Compstmt -> Stmt .
+  op BEGIN`{_`} : Compstmt -> Stmt .
+  op END`{_`} : Compstmt -> Stmt .
+  op _=_do|_|_end : Lhs Command BlockVar Compstmt -> Stmt .
+  op _=_do||_end : Lhs Command Compstmt -> Stmt .
   op _=_do_end : Lhs Command Compstmt -> Stmt .
   op _=_ : Lhs Command -> Stmt .
   subsort Expr < Stmt .
@@ -52,17 +50,17 @@ mod KRUBY-SYNTAX is
   op _::__ : Primary Operation CallArgs -> Command .
   op super_ : CallArgs -> Command .
 
-  op _(_) : Operation CallArgs -> Function .
-  op _() : Operation -> Function .
+  op _`(_`) : Operation CallArgs -> Function .
+  op _`(`) : Operation -> Function .
   subsort Operation < Function .
-  op _._(_) : Primary Operation CallArgs -> Function .
-  op _._() : Primary Operation -> Function .
+  op _._`(_`) : Primary Operation CallArgs -> Function .
+  op _._`(`) : Primary Operation -> Function .
   op _._ : Primary Operation -> Function .
-  op _::_(_) : Primary Operation CallArgs -> Function .
-  op _::_() : Primary Operation -> Function .
+  op _::_`(_`) : Primary Operation CallArgs -> Function .
+  op _::_`(`) : Primary Operation -> Function .
   op _::_ : Primary Operation -> Function .
-  op super(_) : CallArgs -> Function .
-  op super() : -> Function .
+  op super`(_`) : CallArgs -> Function .
+  op super`(`) : -> Function .
   op super : -> Function .
 
   op _=_ : Lhs Arg -> Arg .
@@ -99,39 +97,40 @@ mod KRUBY-SYNTAX is
   op defined?_ : Arg -> Arg .
   subsort Primary < Arg .
 
-  op ((_)) : Compstmt -> Primary .
+  op `(_`) : Compstmt -> Primary .
   subsort Literal < Primary .
   subsort Variable < Primary .
   op _::_ : Primary Identifier -> Primary .
   op ::_ : Identifier -> Primary .
-  op _[_] : Primary Args -> Primary .
-  op _[] : Primary -> Primary .
-  op [_,] : Args -> Primary .
-  op [_] : Args -> Primary .
-  op [] : -> Primary .
-  op {_,} : Args -> Primary .
-  op {_,} : Assocs -> Primary .
-  op {_} : Args -> Primary .
-  op {_} : Assocs -> Primary .
-  op {} : -> Primary .
-  op return(_) : CallArgs -> Primary .
-  op return() : -> Primary .
+  op _`[_`] : Primary Args -> Primary .
+  op _`[`] : Primary -> Primary .
+  op `[_`,`] : Args -> Primary .
+  op `[_`] : Args -> Primary .
+  op `[`] : -> Primary .
+  op `{_`,`} : Args -> Primary .
+  op `{_`,`} : Assocs -> Primary .
+  op `{_`} : Args -> Primary .
+  op `{_`} : Assocs -> Primary .
+  op `{`} : -> Primary .
+  op return`(_`) : CallArgs -> Primary .
+  op return`(`) : -> Primary .
   op return : -> Primary .
-  op yield(_) : CallArgs -> Primary .
-  op yield() : -> Primary .
+  op yield`(_`) : CallArgs -> Primary .
+  op yield`(`) : -> Primary .
   op yield : -> Primary .
-  op defined?(_) : Arg -> Primary .
+  op defined?`(_`) : Arg -> Primary .
   subsort Function < Primary .
-  op _{|_|_} : Function BlockVar Compstmt -> Primary .
-  op _{||_} : Function Compstmt -> Primary .
-  op _{_} : Function Compstmt -> Primary .
+  op _`{|_|_`} : Function BlockVar Compstmt -> Primary .
+  op _`{||_`} : Function Compstmt -> Primary .
+  op _`{_`} : Function Compstmt -> Primary .
 
   sort List{elsifBlock} .
   op elsif___ : Expr Then Compstmt -> List{elsifBlock} .
   op __ : List{elsifBlock} List{elsifBlock} -> List{elsifBlock} .
-  op .List{elsifBlock} : -> List{elsifBlock} .
   op if____else_end : Expr Then Compstmt List{elsifBlock} Compstmt -> Primary .
+  op if___else_end : Expr Then Compstmt Compstmt -> Primary .
   op if____end : Expr Then Compstmt List{elsifBlock} -> Primary .
+  op if___end : Expr Then Compstmt -> Primary .
 
   op unless___else_end : Expr Then Compstmt Compstmt -> Primary .
   op unless___end : Expr Then Compstmt -> Primary .
@@ -150,7 +149,6 @@ mod KRUBY-SYNTAX is
   op rescue___ : Args Do Compstmt -> List{rescueClause} .
   op rescue__ : Do Compstmt -> List{rescueClause} .
   op __ : List{rescueClause} List{rescueClause} -> List{rescueClause} .
-  op .List{rescueClause} -> List{rescueClause} .
   op begin__else_ensure_end : Compstmt List{rescueClause} Compstmt Compstmt -> Primary .
   op begin__else_end : Compstmt List{rescueClause} Compstmt -> Primary .
   op begin__ensure_end : Compstmt List{rescueClause} Compstmt -> Primary .
@@ -163,7 +161,7 @@ mod KRUBY-SYNTAX is
   op def_.___end : Singleton Fname Argdecl Compstmt -> Primary .
   op def_::___end : Singleton Fname Argdecl Compstmt -> Primary .
 
-  op _,*_ : Args Arg -> WhenArgs .
+  op _`,*_ : Args Arg -> WhenArgs .
   subsort Args < WhenArgs .
   op *_ : Arg -> WhenArgs .
 
@@ -178,36 +176,36 @@ mod KRUBY-SYNTAX is
   subsort Lhs < BlockVar .
   subsort Mlhs < BlockVar .
 
-  op _,* : MlhsItem -> Mlhs .
-  op _, : MlhsItem -> Mlhs .
+  op _`,* : MlhsItem -> Mlhs .
+  op _`, : MlhsItem -> Mlhs .
   op *_ : Lhs -> Mlhs .
-  op _,_ : MlhsItem Mlhs -> Mlhs .
+  op _`,_ : MlhsItem Mlhs -> Mlhs .
 
   subsort Lhs < MlhsItem .
-  op ((_)) : Mlhs -> MlhsItem .
+  op `(_`) : Mlhs -> MlhsItem .
 
   subsort Variable < Lhs .
-  op _[_] : Primary Args -> Lhs .
-  op _[] : Primary -> Lhs .
+  op _`[_`] : Primary Args -> Lhs .
+  op _`[`] : Primary -> Lhs .
   op _._ : Primary Identifier -> Lhs .
 
-  op _,*_ : Args Arg -> Mrhs .
+  op _`,*_ : Args Arg -> Mrhs .
   subsort Args < Mrhs .
   op *_ : Arg -> Mrhs .
 
   subsort Args < CallArgs .
-  op _,_,*_,&_ : Args Assocs Arg Arg -> CallArgs .
-  op _,_,*_ : Args Assocs Arg -> CallArgs .
-  op _,_,&_ : Args Assocs Arg -> CallArgs .
-  op _,_ : Args Assocs -> CallArgs .
-  op _,*_,&_ : Args Arg Arg -> CallArgs .
-  op _,*_ : Args Arg -> CallArgs .
-  op _,&_ : Args Arg -> CallArgs .
-  op _,*_,&_ : Assocs Arg Arg -> CallArgs .
-  op _,*_ : Assocs Arg -> CallArgs .
-  op _,&_ : Assocs Arg -> CallArgs .
+  op _`,_`,*_`,&_ : Args Assocs Arg Arg -> CallArgs .
+  op _`,_`,*_ : Args Assocs Arg -> CallArgs .
+  op _`,_`,&_ : Args Assocs Arg -> CallArgs .
+  op _`,_ : Args Assocs -> CallArgs .
+  op _`,*_`,&_ : Args Arg Arg -> CallArgs .
+  op _`,*_ : Args Arg -> CallArgs .
+  op _`,&_ : Args Arg -> CallArgs .
+  op _`,*_`,&_ : Assocs Arg Arg -> CallArgs .
+  op _`,*_ : Assocs Arg -> CallArgs .
+  op _`,&_ : Assocs Arg -> CallArgs .
   subsort Assocs < CallArgs .
-  op *_,&_ : Arg Arg -> CallArgs .
+  op *_`,&_ : Arg Arg -> CallArgs .
   op *_ : Arg -> CallArgs .
   op &_ : Arg -> CallArgs .
   subsort Command < CallArgs .
@@ -215,22 +213,26 @@ mod KRUBY-SYNTAX is
   op _,_ : Args Arg -> Args .
   subsort Arg < Args .
 
-  op ((_)) : Arglist -> Argdecl .
+  op `(_`) : Arglist -> Argdecl .
+  op `(`) : -> Argdecl .
   op __ : Arglist Term -> Argdecl .
+  subsort Term < Argdecl .
 
-  op *_&_ : Identifier Identifier -> Arglist .
+  sort beforeNewLine .
+  subsort Argdecl Compstmt < beforeNewLine .
+
+  op _`,*`,&_ : Identifier Identifier -> Arglist .
+  op *_`,&_ : Identifier Identifier -> Arglist .
   op &_ : Identifier -> Arglist .
   op *_ : Identifier -> Arglist .
-  op _,_ : Identifier Arglist -> Arglist .
+  op _`,_ : Identifier Arglist -> Arglist .
+  subsort Identifier < Arglist .
 
   subsort Variable < Singleton .
-  op ((_)) : Expr -> Singleton .
+  op `(_`) : Expr -> Singleton .
 
-  sort List{commaAssoc} .
-  op ,_ : Assoc -> List{commaAssoc} .
-  op __ : List{commaAssoc} List{commaAssoc} -> List{commaAssoc} .
-  op .List{commaAssoc} : -> List{commaAssoc} .
-  op __ : Assoc List{commaAssoc} -> Assocs .
+  subsort Assoc < Assocs .
+  op _`,_ : Assocs Assoc -> Assocs .
 
   op _=>_ : Arg Arg -> Assoc .
 
@@ -257,7 +259,7 @@ mod KRUBY-SYNTAX is
   subsort Regexp < Literal .
 
   op ; : -> Term .
-  op \n : -> Term .
+  --- op \n : -> Term .
 
   op += : -> OpAsgn .
   op -= : -> OpAsgn .
