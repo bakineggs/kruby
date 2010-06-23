@@ -1,0 +1,3 @@
+load "kruby-compiled.maude"
+rew run("intPgm") .
+quit

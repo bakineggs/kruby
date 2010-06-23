@@ -1,0 +1,10 @@
+kruby - a definition and implementation of the Ruby language using the K Semantic Framework
+
+The following are highly relevant to this project:
+Ruby Language: http://ruby-lang.org
+K Semantic Framework: http://fsl.cs.uiuc.edu/index.php/K
+Maude: http://maude.cs.uiuc.edu
+K-Maude: http://k-framework.googlecode.com
+
+For a good explanation of what K is and how to use it, see:
+http://fsl.cs.uiuc.edu/images/4/42/CS422-Spring-2010-K.pdf

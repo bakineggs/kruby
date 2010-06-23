@@ -1,0 +1,10 @@
+in k-framework/k-prelude
+in kruby-syntax
+in kruby-programs
+
+mod KRUBY is
+  including KRUBY-SYNTAX .
+  including KRUBY-PROGRAMS .
+
+  op run : Program -> Program .
+endm
