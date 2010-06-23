@@ -8,3 +8,10 @@ K-Maude: http://k-framework.googlecode.com
 
 For a good explanation of what K is and how to use it, see:
 http://fsl.cs.uiuc.edu/images/4/42/CS422-Spring-2010-K.pdf
+
+Initial Setup:
+After cloning this repository, run "git submodule init" and "git submodule update" to checkout k-framework.
+
+Building & Testing:
+make build
+make test
