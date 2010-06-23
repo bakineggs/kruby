@@ -1,0 +1,3 @@
+[submodule "k-framework"]
+	path = k-framework
+	url = git@github.com:bakineggs/k-framework.git
