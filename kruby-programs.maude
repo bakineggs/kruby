@@ -1,5 +1,0 @@
-mod KRUBY-PROGRAMS is including KRUBY-SYNTAX .
-  op intPgm : -> Program .
-
-  eq intPgm = ( 1 ) .
-endm
